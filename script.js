@@ -3,9 +3,7 @@ const path = require('path');
 
 class UniqueInt {
     constructor() {
-        // Array to track seen integers in the range -1023 to 1023
         this.seen = new Array(2047).fill(false);  
-        // Custom implementation to store unique numbers
         this.uniqueNumbers = [];  
     }
 
@@ -15,15 +13,15 @@ class UniqueInt {
      * @param {string} outputFilePath - Path to the output file.
      */
     processFile(inputFilePath, outputFilePath) {
-        this.seen.fill(false);  // Reset for each file
-        this.uniqueNumbers = [];  // Reset unique numbers array
+        this.seen.fill(false);  
+        this.uniqueNumbers = [];  
 
         const lines = this.readLines(inputFilePath);
 
         for (const line of lines) {
             const number = this.readNextItemFromFile(line);
             if (number !== null) {
-                const index = number + 1023;  // Shift range -1023 to 1023 to 0 to 2046
+                const index = number + 1023;  
                 if (!this.seen[index]) {
                     this.seen[index] = true;
                     this.insertUniqueNumber(number);
@@ -82,21 +80,17 @@ class UniqueInt {
      * @param {string} outputFilePath - Path to the output file.
      */
     writeOutput(outputFilePath) {
-        let output = '';
-        for (const number of this.uniqueNumbers) {
-            output += `${number}\n`;
-        }
+        const output = this.uniqueNumbers.join('\n');
         fs.writeFileSync(outputFilePath, output, 'utf-8');
     }
 }
 
-// Running the script
+// Main execution
 const inputDir = '/dsa/hw01/sample_inputs/';
 const outputDir = '/dsa/hw01/sample_results/';
 
 const uniqueIntProcessor = new UniqueInt();
 
-// Measure memory usage and runtime
 const startTime = process.hrtime.bigint();
 const initialMemoryUsage = process.memoryUsage().heapUsed;
 
@@ -117,3 +111,4 @@ const timeTaken = (endTime - startTime) / BigInt(1e6);  // Convert nanoseconds t
 
 console.log(`Memory used: ${memoryUsed} bytes`);
 console.log(`Time taken: ${timeTaken} milliseconds`);
+
